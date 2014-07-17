@@ -1,0 +1,12 @@
+{
+  "name": "hmAlpha",
+  "version": "0.0.1",
+  "description": "Help me maintain my house!",
+  "main": "hmAlpha.js",
+  "repository": "",
+  "author": "ric <ric@netrc.com>",
+  "dependencies": {
+    "async": "~0.2.8",
+    "express": "~3.2.4",
+  }
+}

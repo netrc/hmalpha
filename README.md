@@ -1,6 +1,6 @@
-# Node Chat Example
+# house Manager (alpha)
 
-Chat example to showcase how to use `socket.io` with a static `express` server.
+showing off the wireframes, example of house manager app
 
 ## Setup
 

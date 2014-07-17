@@ -5,7 +5,7 @@
   "main": "hmAlpha.js",
   "scripts": {
     "start": "node hmAlpha.js"
-  }
+  },
   "repository": "",
   "author": "ric <ric@netrc.com>",
   "dependencies": {

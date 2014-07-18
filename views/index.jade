@@ -1,0 +1,45 @@
+doctype html
+html(lang="en")
+  head
+    title House Manager
+    meta(name="viewport",content="width=device-width, initial-scale=1.0")
+    link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css", rel="stylesheet")
+    style body {    padding-top: 60px;}
+
+  body
+
+    div.navbar.navbar-fixed-top.navbar-inverse
+      ul.nav.navbar-nav
+        li.dropdown
+          a.dropdown-toggle(href="#",data-toggle="dropdown") hmAlpha
+            span.caret
+          ul.dropdown-menu(role="menu")
+            li
+              a(href="#") Change/Add House
+            li.divider
+            li
+              a(href="#") Logout
+            li
+              a(href="#") Profile
+        p.navbar-text netrc
+        p.navbar-text 7Byron
+
+  div.col-md-2
+    ul.nav.nav-pills.nav-stacked
+      li.active
+        a Hot water boiler
+      li
+        a First floor A/C
+      li
+        a Second floor A/C
+  div.col-md-10
+    ul.nav.nav-tabs(role="tablist")
+      li.active
+        a Specs
+      li
+        a Log
+      li
+        a Pics
+
+  script(src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js")
+  script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js")

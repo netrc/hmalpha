@@ -25,13 +25,13 @@ html(lang="en")
         p.navbar-text 7Byron
 
   div.col-md-2
+    ul.nav.nav-pills.nav-stacked(data-bind="foreach: systemNames")
+      li
+        a
+          span(data-bind="text:$data,event:{click:$parent.selectSystem}")
     ul.nav.nav-pills.nav-stacked
-      li.active
-        a Hot water boiler
       li
-        a First floor A/C
-      li
-        a Second floor A/C
+        a <i> Add System </i>
   div.col-md-10
     ul.nav.nav-tabs(role="tablist")
       li.active
@@ -43,3 +43,16 @@ html(lang="en")
 
   script(src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js")
   script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js")
+  script(src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js")
+
+  script(type='text/javascript').
+    var systemModel = function() {
+      var self = this;
+      self.systemNames = ko.observableArray();
+      self.selectSystem = function ( s ) {
+        console.log("selecting ",s);
+        };
+    };
+    var x = new systemModel();
+    ko.applyBindings(x);
+    x.systemNames( !{JSON.stringify(sName)} );

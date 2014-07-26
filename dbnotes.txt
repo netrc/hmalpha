@@ -1,3 +1,5 @@
+// https://www.npmjs.org/package/pg-query
+
 CREATE TABLE HRoles(
    ROLE           CHAR(16)    NOT NULL
 );

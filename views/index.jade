@@ -55,12 +55,15 @@ html(lang="en")
             button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
             h3#myModalLabel Add A System...
           div.modal-body
-            p Name
-            p Location
-            p other...
-          div.modal-footer
-            button.btn(data-dismiss="modal", aria-hidden="true") Close
-            button#addSystemButton.btn.btn-primary Save changes
+            form(data-bind="submit: submitNewSystem")
+              div.input-group
+                input.form-control(type="text", data-bind="value: newSystemName", placeholder="system name")
+                input.form-control(type="text", data-bind="value: newLocation", placeholder="location")
+              br
+              input(type="submit", value="Submit")
+          //div.modal-footer
+            //button.btn(data-dismiss="modal", aria-hidden="true") Close
+            //button#addSystemButton.btn.btn-primary Save changes
 
 
 
@@ -74,9 +77,22 @@ html(lang="en")
       self.username = ko.observable();
       self.housename = ko.observable();
       self.systemNames = ko.observableArray();
+      self.newSystemName = ko.observable();
+      self.newLocation = ko.observable();
       self.selectSystem = function ( s ) {
         $("#mainview").text("selecting the system: " + s);
-        };
+      };
+      self.submitNewSystem = function () {
+        var nsn = this.newSystemName();
+        if (!nsn || !nsn.length) {
+          alert("Hmmm... the system name seems empty");
+          return true;
+        }
+        var nsl = this.newLocation();
+        self.systemNames.push(nsn);
+        $.post("/rest/system/?systemName=" + escape(nsn) + "&location=" + escape(nsl) );
+        return true; // allows form to accept event and vanish
+      };
     };
     ko.applyBindings(hModel);
 

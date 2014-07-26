@@ -27,3 +27,14 @@ exports.getTableField = function ( tableName, fieldName, cb ) {
     });
 };
 
+exports.postTableField = function (tableName,fieldName, newVal, cb) {
+    var q = "INSERT INTO " + tableName + "(" + fieldName + ") VALUES ('" + newVal + "');";
+    query(q,  function(err, rows, result) {
+        if (err) {
+            console.log('error: ', err.message);
+        } else {
+            cb( );
+        }
+    });
+};
+

@@ -35,24 +35,29 @@ html(lang="en")
   div.col-md-10
     ul.nav.nav-tabs(role="tablist")
       li.active
-        a Specs
+        a(href="#specs",data-toggle="tab") Specs
       li
-        a Log
+        a(href="#log",data-toggle="tab") Log
       li
-        a Pics
+        a(href="#pics",data-toggle="tab") Pics
+    div#mainview <i> select a house system... </i>
 
   script(src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js")
   script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js")
   script(src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js")
 
   script(type='text/javascript').
-    var systemModel = function() {
+    var hModel = new function() {
       var self = this;
       self.systemNames = ko.observableArray();
       self.selectSystem = function ( s ) {
         console.log("selecting ",s);
+        $("#mainview").text("selecting the system: " + s);
         };
     };
-    var x = new systemModel();
-    ko.applyBindings(x);
-    x.systemNames( !{JSON.stringify(sName)} );
+    ko.applyBindings(hModel);
+
+    $.getJSON("/rest/system/", function(data) {
+      hModel.systemNames( data );
+      console.log("restget: ", data);
+    });

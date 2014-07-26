@@ -21,26 +21,48 @@ html(lang="en")
               a(href="#") Logout
             li
               a(href="#") Profile
-        p.navbar-text netrc
-        p.navbar-text 7Byron
+        p.navbar-text(data-bind="text: username")
+        p.navbar-text(data-bind="text: housename")
 
-  div.col-md-2
-    ul.nav.nav-pills.nav-stacked(data-bind="foreach: systemNames")
-      li
-        a
-          span(data-bind="text:$data,event:{click:$parent.selectSystem}")
-    ul.nav.nav-pills.nav-stacked
-      li
-        a <i> Add System </i>
-  div.col-md-10
-    ul.nav.nav-tabs(role="tablist")
-      li.active
-        a(href="#specs",data-toggle="tab") Specs
-      li
-        a(href="#log",data-toggle="tab") Log
-      li
-        a(href="#pics",data-toggle="tab") Pics
-    div#mainview <i> select a house system... </i>
+    div.container-fluid
+      div.row-fluid
+      div.col-md-2
+        ul.nav.nav-pills.nav-stacked
+          li
+            a(href="#",data-bind="text: housename")
+        ul.nav.nav-pills.nav-stacked(data-bind="foreach: systemNames")
+          li
+            a
+              span(data-bind="text:$data,event:{click:$parent.selectSystem}")
+        ul.nav.nav-pills.nav-stacked
+          li
+            a.btn(href="#addSystemModal",data-toggle="modal",role="button") <i> Add System </i>
+      div.col-md-10
+        ul.nav.nav-tabs(role="tablist")
+          li.active
+            a(href="#specs",data-toggle="tab") Specs
+          li
+            a(href="#log",data-toggle="tab") Log
+          li
+            a(href="#pics",data-toggle="tab") Pics
+        div#mainview <i> select a house system... </i>
+
+
+    div#addSystemModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+      div.modal-dialog
+        div.modal-content
+          div.modal-header
+            button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+            h3#myModalLabel Add A System...
+          div.modal-body
+            p Name
+            p Location
+            p other...
+          div.modal-footer
+            button.btn(data-dismiss="modal", aria-hidden="true") Close
+            button#addSystemButton.btn.btn-primary Save changes
+
+
 
   script(src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js")
   script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js")
@@ -49,15 +71,19 @@ html(lang="en")
   script(type='text/javascript').
     var hModel = new function() {
       var self = this;
+      self.username = ko.observable();
+      self.housename = ko.observable();
       self.systemNames = ko.observableArray();
       self.selectSystem = function ( s ) {
-        console.log("selecting ",s);
         $("#mainview").text("selecting the system: " + s);
         };
     };
     ko.applyBindings(hModel);
 
-    $.getJSON("/rest/system/", function(data) {
-      hModel.systemNames( data );
-      console.log("restget: ", data);
-    });
+    // init the interface
+
+
+    // initialize the houses, systems
+    hModel.username("netrc");
+    hModel.housename("7Byron");
+    $.getJSON("/rest/system/", function(data) { hModel.systemNames( data ); } );

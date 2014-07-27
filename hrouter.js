@@ -16,8 +16,11 @@ exports.restGetSystem = function (req, res) {
 exports.restPostSystem = function (req, res) {
   var nsn = req.param('systemName');
   var nsl = req.param('location');
+  var dorder = req.param('displayorder');
+  var dname = nsn + ' ' + nsl;
+  var hid = 99;
   console.log("got nsn: " + nsn + " nsl: " + nsl);
-  D.postTableField("system","displayname", nsn, function() {
+  D.modelAddSystem( dname, nsn, nsl, dorder, hid, function() {
     res.redirect( "/" );
   });
 };

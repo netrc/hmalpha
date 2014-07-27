@@ -4,7 +4,9 @@ html(lang="en")
     title House Manager
     meta(name="viewport",content="width=device-width, initial-scale=1.0")
     link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css", rel="stylesheet")
-    style body {    padding-top: 60px;}
+    style(type='text/css').
+      body {    padding-top: 60px; }
+      p.error { color: red }
 
   body
 
@@ -40,13 +42,16 @@ html(lang="en")
       div.col-md-10
         ul.nav.nav-tabs(role="tablist")
           li.active
-            a(href="#specs",data-toggle="tab") Specs
+            a(href="#sysspecs",role="tab",data-toggle="tab",id="sysspecstab") Specs
           li
-            a(href="#log",data-toggle="tab") Log
+            a(href="#syslog",role="tab",data-toggle="tab",id="syslogtab") Log
           li
-            a(href="#pics",data-toggle="tab") Pics
-        div#mainview <i> select a house system... </i>
-
+            a(href="#syspics",role="tab",data-toggle="tab",id="syspicstab") Pics
+        div.tab-content#mainview
+          div.tab-pane.active#sysspecs
+          div.tab-pane#syslog
+          div.tab-pane#syspics
+  
 
     div#addSystemModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
       div.modal-dialog
@@ -55,6 +60,7 @@ html(lang="en")
             button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
             h3#myModalLabel Add A System...
           div.modal-body
+            p.error(data-bind="text: submitNewSystemErrorString")
             form(data-bind="submit: submitNewSystem")
               div.input-group
                 input.form-control(type="text", data-bind="value: newSystemName", placeholder="system name")
@@ -80,26 +86,45 @@ html(lang="en")
       self.newSystemName = ko.observable();
       self.newLocation = ko.observable();
       self.selectSystem = function ( s ) {
-        $("#mainview").text("selecting the system: " + s);
+        $("#sysspecs").text("selecting the system: " + s);
       };
+      self.submitNewSystemErrorString = ko.observable();
       self.submitNewSystem = function () {
         var nsn = this.newSystemName();
         if (!nsn || !nsn.length) {
-          alert("Hmmm... the system name seems empty");
-          return true;
+          this.submitNewSystemErrorString("Hmmm... the system name appears to be empty");
+          return false; // leave form on screen
         }
         var nsl = this.newLocation();
         self.systemNames.push(nsn);
-        $.post("/rest/system/?systemName=" + escape(nsn) + "&location=" + escape(nsl) );
+        var dnum = self.systemNames().length;
+        $.post("/rest/system/?systemName=" + escape(nsn) + "&location=" + escape(nsl) + "&displayorder=" + dnum );
         return true; // allows form to accept event and vanish
       };
     };
     ko.applyBindings(hModel);
 
     // init the interface
+    //$('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+    function installShowHandler( id, cb ) { $(id).on('show.bs.tab', cb); };
+    installShowHandler( "#sysspecstab", showSpecsTab );
+    installShowHandler( "#syslogtab", showLogTab );
+    installShowHandler( "#syspicstab", showPicsTab );
+
+    // the show handlers are used to grab the data from the db and display it (!! if it is not there!)
+    function showSpecsTab( e ) {
+      console.log("showspcstab handler...");
+    }
+    function showLogTab( e ) {
+      console.log("showlogtab handler...");
+    }
+    function showPicsTab( e ) {
+      console.log("showpicstab handler...");
+    }
 
 
     // initialize the houses, systems
     hModel.username("netrc");
     hModel.housename("7Byron");
+    hModel.submitNewSystemErrorString("foobar");
     $.getJSON("/rest/system/", function(data) { hModel.systemNames( data ); } );

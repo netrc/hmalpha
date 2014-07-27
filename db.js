@@ -38,3 +38,15 @@ exports.postTableField = function (tableName,fieldName, newVal, cb) {
     });
 };
 
+exports.modelAddSystem = function( dname, nsn, nsl, dorder, hid, cb ) {
+    var q = "INSERT INTO  system ( displayname, systemname, location, displayorder, house_id) VALUES ('" + dname + "','" + nsn + "','" + nsl + "'," + dorder + "," + hid + ");";
+    query(q,  function(err, rows, result) {
+        if (err) {
+            console.log('error: ', err.message);
+        } else {
+            cb( );
+        }
+    });
+    
+}
+

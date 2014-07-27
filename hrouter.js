@@ -13,6 +13,12 @@ exports.restGetSystem = function (req, res) {
   });
 };
 
+exports.restGetSystemName = function (req, res) {
+  D.getTableRow("system", req.params.sysname, function(v) {
+    res.send( v );
+  });
+};
+
 exports.restPostSystem = function (req, res) {
   var nsn = req.param('systemName');
   var nsl = req.param('location');

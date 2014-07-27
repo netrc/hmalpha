@@ -12,19 +12,20 @@ html(lang="en")
 
     div.navbar.navbar-fixed-top.navbar-inverse
       ul.nav.navbar-nav
+        p.navbar-text hmAlpha
         li.dropdown
-          a.dropdown-toggle(href="#",data-toggle="dropdown") hmAlpha
+          a.dropdown-toggle(href="#",data-toggle="dropdown",data-bind="text: username")
             span.caret
           ul.dropdown-menu(role="menu")
             li
-              a(href="#") Change/Add House
-            li.divider
-            li
-              a(href="#") Logout
-            li
               a(href="#") Profile
-        p.navbar-text(data-bind="text: username")
-        p.navbar-text(data-bind="text: housename")
+              a(href="#") logout
+        li.dropdown
+          a.dropdown-toggle(href="#",data-toggle="dropdown", data-bind="text: housename")
+            span.caret
+          ul.dropdown-menu(role="menu")
+            li
+              a(href="#") Add House
 
     div.container-fluid
       div.row-fluid
@@ -49,6 +50,19 @@ html(lang="en")
             a(href="#syspics",role="tab",data-toggle="tab",id="syspicstab") Pics
         div.tab-content#mainview
           div.tab-pane.active#sysspecs
+            input(data-bind="value: specs_dname",placeholder="display name")
+            br
+            input(data-bind="value: specs_sname",placeholder="system name")
+            &nbsp &nbsp &nbsp
+            input(data-bind="value: specs_location",placeholder="location")
+            br
+            input(data-bind="value: specs_vendormodel",placeholder="vendor           model #:            s/n:")
+            br
+            textarea#sysspecs(placeholder="specs...")
+            br
+            input(placeholder="install date")
+            br
+            input(placeholder="main schedule")
           div.tab-pane#syslog
           div.tab-pane#syspics
   
@@ -86,8 +100,15 @@ html(lang="en")
       self.newSystemName = ko.observable();
       self.newLocation = ko.observable();
       self.selectSystem = function ( s ) {
-        $("#sysspecs").text("selecting the system: " + s);
+        //$("#sysspecs").text("selecting the system: " + s);
+        console.log("selecting the system: "+s);
+        self.specs_dname(s);
+        showSpecsTab( null );
       };
+      self.specs_dname = ko.observable();
+      self.specs_sname = ko.observable();
+      self.specs_location = ko.observable();
+      self.specs_vendormodel = ko.observable();
       self.submitNewSystemErrorString = ko.observable();
       self.submitNewSystem = function () {
         var nsn = this.newSystemName();
@@ -106,6 +127,10 @@ html(lang="en")
 
     // init the interface
     //$('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+    $("#addSystemModal").on('hide.bs.modal', function(e) {
+      console.log("asm hide clear error");
+      hModel.submitNewSystemErrorString("");
+    });
     function installShowHandler( id, cb ) { $(id).on('show.bs.tab', cb); };
     installShowHandler( "#sysspecstab", showSpecsTab );
     installShowHandler( "#syslogtab", showLogTab );
@@ -114,6 +139,15 @@ html(lang="en")
     // the show handlers are used to grab the data from the db and display it (!! if it is not there!)
     function showSpecsTab( e ) {
       console.log("showspcstab handler...");
+      // grap the specs for...
+      var currSys = hModel.specs_dname();
+      console.log("....specs_dname: " + currSys);
+      $.getJSON("/rest/system/"+escape(currSys), function(data) {
+        console.log("back in getjson");
+        hModel.specs_sname( data[0].systemname );
+        hModel.specs_location( data[0].location );
+        hModel.specs_vendormodel( data[0].vendormodel );
+      });
     }
     function showLogTab( e ) {
       console.log("showlogtab handler...");
@@ -121,10 +155,13 @@ html(lang="en")
     function showPicsTab( e ) {
       console.log("showpicstab handler...");
     }
+    
+    function showHouseTab () {  // for showing the house details
+      // hack?? just use the specs 
+    }
 
 
     // initialize the houses, systems
-    hModel.username("netrc");
-    hModel.housename("7Byron");
-    hModel.submitNewSystemErrorString("foobar");
+    hModel.username("netrc");   // get the auth user name
+    hModel.housename("7Byron"); // get the default house
     $.getJSON("/rest/system/", function(data) { hModel.systemNames( data ); } );

@@ -16,6 +16,18 @@ exports.demoSelect = function () {
     });
 };
 
+exports.getTableRow = function( tableName, sysname, cb ) {
+  var q = 'SELECT * from ' + tableName + ' where displayname = \'' + sysname + '\';';
+    query(q,  function(err, rows, result) {
+        if (err) {
+            console.log('error: ', err.message);
+        } else {
+            console.log("gtr: ok - found " + rows.length + "rows")
+            cb( rows );
+        }
+    });
+};
+
 exports.getTableField = function ( tableName, fieldName, cb ) {
     var q = 'SELECT * from ' + tableName;
     query(q,  function(err, rows, result) {

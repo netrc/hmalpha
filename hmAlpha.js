@@ -11,8 +11,9 @@ app.set('view engine', 'jade');
 app.get('/', R.frontPage);
 
 // Basic REST
-app.get('/rest/system/', R.restGetSystem); // add
-app.post('/rest/system/', R.restPostSystem); // add
+app.get('/rest/system/', R.restGetSystem);
+app.get('/rest/system/:sysname', R.restGetSystemName);
+app.post('/rest/system/', R.restPostSystem);
 
 app.listen(process.env.PORT, process.env.IP);
 console.log("express hmalpha running");

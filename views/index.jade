@@ -64,7 +64,9 @@ html(lang="en")
             br
             input(placeholder="main schedule")
           div.tab-pane#syslog
+            p log pane
           div.tab-pane#syspics
+            p some pics....
   
 
     div#addSystemModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
@@ -138,12 +140,15 @@ html(lang="en")
 
     // the show handlers are used to grab the data from the db and display it (!! if it is not there!)
     function showSpecsTab( e ) {
-      console.log("showspcstab handler...");
+      //console.log("showspcstab handler...");
       // grap the specs for...
       var currSys = hModel.specs_dname();
       console.log("....specs_dname: " + currSys);
+      hModel.specs_sname( "" );
+      hModel.specs_location( "" );
+      hModel.specs_vendormodel( "" );
       $.getJSON("/rest/system/"+escape(currSys), function(data) {
-        console.log("back in getjson");
+        //console.log("back in getjson");
         hModel.specs_sname( data[0].systemname );
         hModel.specs_location( data[0].location );
         hModel.specs_vendormodel( data[0].vendormodel );

@@ -1,3 +1,12 @@
+Project
+
+Make It Active !
+- make it a game, reward points for each day all green, items done on time, house condition ranking
+- active - push/email schedule notices / thoughts / rebates / new tech
+- potential yearly costs, replacement costs
+- zillow
+- social - tweet - I fixed A/C // via HouseManager
+
 database notes
 
 owner
@@ -12,6 +21,7 @@ house
   address // string
   yearBuilt // integer
   owner // USER
+  num people in house // integer
   systems // collection of systems via house
   hLogs // collection of hlog via house
   hToDo
@@ -24,6 +34,7 @@ system
   
 systemItem
   name // string
+  active // true/false
   vendor // string
   model // string
   serialNumber // string
@@ -31,10 +42,13 @@ systemItem
   specs // string
   installDate // date
   manufactureDate // date
+  removeData // date
   description // text
+  manual // URL  (collection?)  (includes youtubes)
   siLogs // collection of siLog via systemItem
   siToDo
   siSchedule
+  colors // text
   
 hLog
   date // date
@@ -56,3 +70,10 @@ actionLog
 Notes:
 Rollup systemItem status to System  (red/green/amber)
 Rollup system status's to whole house  (#red, #green, #amber)
+A "system" may be a room, e.g. kids room 1,  esp for paint colors
+# systemItems with no manual link
+
+help people 
+Projects / Todos
+
+mongolab p1ml#

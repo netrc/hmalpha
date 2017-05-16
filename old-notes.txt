@@ -1,0 +1,56 @@
+database notes
+
+owner
+  fullname
+  nickname
+  email
+  houses // collection of houses via owner
+
+house
+  name // string
+  description // text
+  address // string
+  yearBuilt // integer
+  owner // USER
+  systems // collection of systems via house
+  hLogs // collection of hlog via house
+  hToDo
+  
+system
+  name // string
+  location // string
+  house // object: house
+  items // collection of systemItem via system
+  
+systemItem
+  name // string
+  vendor // string
+  model // string
+  serialNumber // string
+  status // string
+  specs // string
+  installDate // date
+  manufactureDate // date
+  description // text
+  siLogs // collection of siLog via systemItem
+  siToDo
+  siSchedule
+  
+hLog
+  date // date
+  title // string
+  text // text
+  pic // URL
+  house // object House
+  
+siLog
+  date // date
+  title // string
+  text // text
+  pic // URL
+  systemItem // object systemItem
+  
+  
+Notes:
+Rollup systemItem status to System  (red/green/amber)
+Rollup system status's to whole house  (#red, #green, #amber)

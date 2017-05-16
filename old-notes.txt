@@ -49,7 +49,9 @@ siLog
   text // text
   pic // URL
   systemItem // object systemItem
-  
+
+actionLog
+  who / new/edit/delete / item
   
 Notes:
 Rollup systemItem status to System  (red/green/amber)
